@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace MonsterHunterProjOOPII
 {
+    //git hub test
     public class MAP
     {
         
-
+        
 
 
     }
