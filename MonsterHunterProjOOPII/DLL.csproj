@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MONSTER.cs" />
+    <Compile Include="HUNTER.cs" />
     <Compile Include="MAP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
