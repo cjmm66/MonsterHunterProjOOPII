@@ -15,14 +15,14 @@ namespace MonsterHunterProjOOPII
         const int MAX_MAP_HEIGHT = 35;
 
         //private variables
-        private int mapWidth, mapHeight;
+        private static int mapWidth, mapHeight;
 
-        private string [] mapFiles;
+        private static string [] mapFiles;
 
         //public get/set
-        public string validationError = "";
+        public static string validationError = "";
 
-        public  int mapWIDTH
+        public  static int mapWIDTH
         {
             get { return mapWidth; }
             private set
@@ -51,7 +51,7 @@ namespace MonsterHunterProjOOPII
             }
         }
         
-        public  int mapHEIGHT
+        public static int mapHEIGHT
         {
             get { return mapHeight; }
             private set
@@ -90,6 +90,7 @@ namespace MonsterHunterProjOOPII
 
         private static void loadMapFromFile(string fileName, HUNTER hunter, List<MONSTER> monsters)
         {
+            int y = 0;
             foreach (string fileLine in System.IO.File.ReadLines(fileName))
             {
                 //convert the string into a char array
@@ -98,9 +99,21 @@ namespace MonsterHunterProjOOPII
                 Array.Resize(ref mapArray, mapArray.Length + 1);
 
                 mapArray[mapArray.GetUpperBound(0)] = fileLineArray;
-            }
-            //assigns the height
 
+                //loop into the fileLineArray to find the player and the monsters
+                for (int x = 0; x < fileLineArray.Length; x++)
+                {
+                    //if the actual position is a player
+                    if(fileLineArray[x] == 'H')
+                    {
+                        
+                    }
+
+                }
+                y++; //next line
+            }
+
+            //assigns the height
             try
             {
                 if(mapArray.Length > MAX_MAP_HEIGHT)
@@ -110,7 +123,7 @@ namespace MonsterHunterProjOOPII
                 }
                 else
                 {
-                   // mapHEIGHT = mapArray.Length;
+                   mapHEIGHT = mapArray.Length;
                 }
 
             }
@@ -119,7 +132,7 @@ namespace MonsterHunterProjOOPII
 
                 throw new Exception("An error occured in the DLL (Assigning map's height)", e);
             }
-
+            //assigns the widht
             try
             {
                 if (mapArray[0].Length > MAX_MAP_WIDTH)
@@ -129,7 +142,7 @@ namespace MonsterHunterProjOOPII
                 }
                 else
                 {
-                    //mapWIDTH = mapArray[0].Length;
+                    mapWIDTH = mapArray[0].Length;
                 }
 
             }
