@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace MonsterHunterProjOOPII
 {
-    abstract class CHARACTER
+    public abstract class CHARACTER
     {
         //const
         private const int MAX_CHARACTER_HP = 30;
-
+        
         private const int MAX_STRENGHT = 7;
-
+        
         private const int MAX_ARMOR = 4;
 
         //private variables

@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CHARACTER.cs" />
+    <Compile Include="INTERFACE.cs" />
     <Compile Include="MONSTER.cs" />
     <Compile Include="HUNTER.cs" />
     <Compile Include="MAP.cs" />

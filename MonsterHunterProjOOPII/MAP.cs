@@ -20,7 +20,7 @@ namespace MonsterHunterProjOOPII
         private static string [] mapFiles;
 
         //public get/set
-        public static string validationError = "";
+        public static string mapValidationError = "";
 
         public  static int mapWIDTH
         {
@@ -30,12 +30,12 @@ namespace MonsterHunterProjOOPII
                 try
                 {
                     //clear last error
-                    validationError = "";
+                    mapValidationError = "";
 
                     //check width number
                     if(value > MAX_MAP_WIDTH || value <= 0)
                     {
-                        validationError = $"value cannot be more than {MAX_MAP_WIDTH} or less than 0";
+                        mapValidationError = $"value cannot be more than {MAX_MAP_WIDTH} or less than 0";
                     }
                     else
                     {
@@ -59,12 +59,12 @@ namespace MonsterHunterProjOOPII
                 try
                 {
                     //clear last error
-                    validationError = "";
+                    mapValidationError = "";
 
                     //check height number
                     if (value > MAX_MAP_HEIGHT || value <= 0)
                     {
-                        validationError = $"value cannot be more than {MAX_MAP_HEIGHT} or less than 0";
+                        mapValidationError = $"value cannot be more than {MAX_MAP_HEIGHT} or less than 0";
                     }
                     else
                     {
@@ -116,9 +116,11 @@ namespace MonsterHunterProjOOPII
             //assigns the height
             try
             {
+                //clears last error
+                mapValidationError = "";
                 if(mapArray.Length > MAX_MAP_HEIGHT)
                 {
-                    Console.WriteLine("The map's height is too big");
+                    mapValidationError = "The map's height is too big";
 
                 }
                 else
@@ -135,9 +137,11 @@ namespace MonsterHunterProjOOPII
             //assigns the widht
             try
             {
+                //clears the last error
+                mapValidationError = "";
                 if (mapArray[0].Length > MAX_MAP_WIDTH)
                 {
-                    Console.WriteLine("The map's width is too big");
+                    mapValidationError = "The map's width is too big";
 
                 }
                 else
