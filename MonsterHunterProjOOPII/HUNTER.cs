@@ -21,6 +21,9 @@ namespace MonsterHunterProjOOPII
 
         //public get/set
         public string hunterValidationError = "";
+
+        public IState state; //internal state of the object
+
         public string NAME
         {
             get { return hunterName; }
@@ -79,18 +82,19 @@ namespace MonsterHunterProjOOPII
             }
         }
 
+        //constructor
+        public HUNTER(int positionX, int positionY) : base (positionX, positionY)
+        {
+            base.freezeTme = 1000; //sets the freeze time to 1 sec
+        }
 
-
-       //constructor
-       public HUNTER(int positionX, int positionY, int freezeTime) : base (positionX, positionY)
-       {
-
-       }
-
-        //method
+        //methods
         public override bool moveCharacter(int X, int Y)
         {
-            throw new NotImplementedException();
+            return false;
+                
         }
+
+
     }
 }

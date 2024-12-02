@@ -148,6 +148,38 @@ namespace MonsterHunterProjOOPII
         }
     }
 
+    public class FastState : IState
+    {
+        private static FastState instance = null;
+        public static FastState getInstance()
+        {
+            if (instance == null)
+            {
+                instance = new FastState();
+            }
+            return instance;
+        }
+
+        public int calculate_Strenght(HUNTER hunter)
+        {
+            return RNG.Instance.Next(0, hunter.STRENGHT);
+        }
+
+        public int calculate_Defense(HUNTER hunter)
+        {
+            return RNG.Instance.Next(0, hunter.ARMOR);
+        }
+
+        public int manage_HP(HUNTER hunter)
+        {
+            return hunter.CURRENTHP;
+        }
+
+        public int manage_FreezeTime(HUNTER hunter)
+        {
+            return hunter.freezeTme * Convert.ToInt32(0.5);
+        }
+    }
 
 }
 

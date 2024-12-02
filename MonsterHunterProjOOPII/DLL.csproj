@@ -43,11 +43,16 @@
   <ItemGroup>
     <Compile Include="CHARACTER.cs" />
     <Compile Include="INTERFACE.cs" />
+    <Compile Include="MONSTER%28S%29.cs" />
     <Compile Include="MONSTER.cs" />
     <Compile Include="HUNTER.cs" />
     <Compile Include="MAP.cs" />
+    <Compile Include="PICKAXE.cs" />
+    <Compile Include="POTION.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RNG.cs" />
+    <Compile Include="SHIELD.cs" />
+    <Compile Include="SWORD.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -26,18 +26,75 @@ namespace MonsterHunterProjOOPII
 
 
         //public get/set
+        public string characterValidationError = "";
+        
         public int freezeTme;
 
-        public int SCREENX
+        public int POSINSCREENX
         {
             get { return positionInScreenX; }
-            set { positionInScreenX = value; }
+            set 
+            {
+                try
+                {
+                    //clears the last error
+                    characterValidationError = "";
+                    if (mapWidth != 0)
+                    {
+                        if (value > mapWidth || value < 0)
+                        {
+                            characterValidationError = "Position is outside of bounds";
+                        }
+                    }
+                    else
+                    {
+                        positionInScreenX = value;
+
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    throw;
+                }
+            
+            
+            
+            }
         }
 
-        public int SCREENY
+        public int POSINSCREENY
+
         {
             get { return positionInScreenY; }
-            set { positionInScreenY = value; }
+            set 
+            {
+                try
+                {
+                    //clears the last error
+                    characterValidationError = "";
+                    if(mapHeight != 0)
+                    {
+                        if(value > mapHeight || value < 0)
+                        {
+                            characterValidationError = "Position is outside of bounds";
+                        }
+                    }
+                    else
+                    {
+                       positionInScreenY = value; 
+
+                    }
+
+                }
+                catch (Exception e)
+                {
+
+                    throw;
+                }
+                
+            
+            }
         }
 
         public int MAPWIDTH
@@ -47,9 +104,9 @@ namespace MonsterHunterProjOOPII
             {
                 try
                 {
-                    if (positionInScreenX != 0 && positionInScreenX > mapWidth)
+                    if (positionInScreenX > mapWidth)
                     {
-                        Console.WriteLine("The player is outside of the bounds of the map");
+                        characterValidationError = "The player is outside of the bounds of the map";
                     }
                     else
                     {
@@ -72,9 +129,9 @@ namespace MonsterHunterProjOOPII
             {
                 try
                 {
-                    if (positionInScreenY != 0 && positionInScreenY > mapHeight)
+                    if (positionInScreenY > mapHeight)
                     {
-                        Console.WriteLine("The player is outside of the bounds of the map");
+                        characterValidationError ="The player is outside of the bounds of the map";
                     }
                     else
                     {
@@ -99,7 +156,7 @@ namespace MonsterHunterProjOOPII
                 {
                     if(value > 30)
                     {
-                        Console.WriteLine($"The maximum HP is {MAX_CHARACTER_HP}");
+                        characterValidationError = $"The maximum HP is {MAX_CHARACTER_HP}";
                     }
                     else
                     {
@@ -124,7 +181,7 @@ namespace MonsterHunterProjOOPII
                 {
                     if(value > MAX_STRENGHT)
                     {
-                        Console.WriteLine($"The maximum strenght possible is {MAX_STRENGHT}");
+                        characterValidationError = $"The maximum strenght possible is {MAX_STRENGHT}";
                     }
                     else
                     {
@@ -148,7 +205,7 @@ namespace MonsterHunterProjOOPII
                 {
                     if (value > MAX_ARMOR)
                     {
-                        Console.WriteLine($"The maximum strenght possible is {MAX_ARMOR}");
+                        characterValidationError = $"The maximum strenght possible is {MAX_ARMOR}";
                     }
                     else
                     {

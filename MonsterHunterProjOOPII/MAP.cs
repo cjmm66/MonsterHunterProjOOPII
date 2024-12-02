@@ -106,7 +106,16 @@ namespace MonsterHunterProjOOPII
                     //if the actual position is a player
                     if(fileLineArray[x] == 'H')
                     {
-                        
+                        hunter.POSINSCREENX = fileLineArray[x];
+                        hunter.POSINSCREENY = y;
+                        fileLineArray[x] = Convert.ToChar("");
+                    }
+
+                    if(fileLineArray[x] == 'M')
+                    {
+                        MONSTER monster = new MONSTER(fileLineArray[x], y);
+                        monsters.Add(monster);
+                        fileLineArray[x] = Convert.ToChar("");
                     }
 
                 }
