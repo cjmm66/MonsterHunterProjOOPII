@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonsterHunterProjOOPII
 {
-    class MONSTER : CHARACTER
+    public class MONSTER : CHARACTER
     {
         public MONSTER(int X, int Y) : base(X,Y)
         {

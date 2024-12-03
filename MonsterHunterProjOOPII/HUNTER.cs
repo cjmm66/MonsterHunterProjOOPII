@@ -12,6 +12,8 @@ namespace MonsterHunterProjOOPII
         //const
         const int MAX_NAME_CHARACTERS = 20;
 
+        const int MIN_NAME_CHARACTERS = 3;
+
         const int MAX_HUNTER_SCORE = 100000;
 
         //private variables
@@ -35,7 +37,11 @@ namespace MonsterHunterProjOOPII
                     hunterValidationError = "";
                     if(value.Length > MAX_NAME_CHARACTERS)
                     {
-                        hunterValidationError = $"The maximum characters are {MAX_NAME_CHARACTERS}";
+                        hunterValidationError = $"The maximum characters is {MAX_NAME_CHARACTERS}";
+                    }
+                    if(value.Length < MIN_NAME_CHARACTERS)
+                    {
+                        hunterValidationError = $"The minimum characters is {MIN_NAME_CHARACTERS}";
                     }
                     else
                     {
@@ -82,6 +88,8 @@ namespace MonsterHunterProjOOPII
             }
         }
 
+        public char[][] hunterMap;
+        
         //constructor
         public HUNTER(int positionX, int positionY) : base (positionX, positionY)
         {
@@ -89,12 +97,23 @@ namespace MonsterHunterProjOOPII
         }
 
         //methods
-        public override bool moveCharacter(int X, int Y)
+        public override bool moveCharacter(int moveX, int moveY)
         {
+            //if (moveX > 0 && moveX < hunterMap.Length && moveY > 0 && moveY < hunterMap[moveY].Length)
+            //{
+                if (hunterMap[moveY][moveX] != '#' && hunterMap[moveY][moveX] != 'M')
+                {
+                    POSINSCREENX = moveX;
+                    POSINSCREENY = moveY;
+
+                    return true;
+                }
+
+            //}
             return false;
-                
         }
 
 
+ 
     }
 }

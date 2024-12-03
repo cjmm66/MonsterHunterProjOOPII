@@ -27,6 +27,8 @@ namespace MonsterHunterProjOOPII
 
         //public get/set
         public string characterValidationError = "";
+
+        public bool checkError;
         
         public int freezeTme;
 
@@ -238,9 +240,21 @@ namespace MonsterHunterProjOOPII
         }
 
         //constructor
-        public CHARACTER(int X, int Y) { }
+        public CHARACTER(int X, int Y)
+        {
+            positionInScreenX = X;
+            positionInScreenY = Y;
+        }
         
-        public CHARACTER(int X, int Y, int MaxX, int MaxY) { }
+        public CHARACTER(int X, int Y, int MaxX, int MaxY) 
+        {
+            positionInScreenX = X;
+            positionInScreenY = Y;
+            MAPWIDTH = MaxX;
+            MAPHEIGHT = MaxY;
+
+
+        }
 
     }
 }

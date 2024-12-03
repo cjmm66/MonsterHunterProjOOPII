@@ -6,14 +6,31 @@ using System.Threading.Tasks;
 
 namespace MonsterHunterProjOOPII
 {
-    class MONSTER_S_
+    public class MONSTER_S_
     {
-        public List <MONSTER> allMonsters;
+        private List <MONSTER> allMonsters;
 
-        //terminar de implementar
-        public List<MONSTER> FindMonsters(List<MONSTER> monsterList)
+        public MONSTER_S_()
         {
-            return monsterList;
+            //I was getting a null error so this helped
+            allMonsters = new List<MONSTER>();
         }
+
+        public List<MONSTER> FindMonsters(List<MONSTER> allMonsters, int X, int Y)
+        {
+            return allMonsters.FindAll(monster => monster.POSINSCREENX == X && monster.POSINSCREENY == Y);
+        }
+
+        public void AddToMonstersList(MONSTER monster)
+        {
+            allMonsters.Add(monster);
+        }
+
+        public List<MONSTER> ReturnMonsterList()
+        {
+
+            return allMonsters;
+        }
+
     }
 }

@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MonsterHunterProjOOPII\DLL.csproj">
+      <Project>{ffa98161-f2f2-4c92-94c8-56c5c18bfea1}</Project>
+      <Name>DLL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

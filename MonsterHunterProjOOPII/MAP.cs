@@ -17,7 +17,7 @@ namespace MonsterHunterProjOOPII
         //private variables
         private static int mapWidth, mapHeight;
 
-        private static string [] mapFiles;
+        private string [] mapFiles;
 
         //public get/set
         public static string mapValidationError = "";
@@ -80,15 +80,21 @@ namespace MonsterHunterProjOOPII
             }
         }
 
+        public string [] MAPFILES
+        {
+            get { return mapFiles; }
+            private set { mapFiles = value; }
+        }
+
         //jagged array (array of arrays)
-        public static char[][] mapArray = new char[][] { };
+        public char[][] mapArray = new char[][] { };
         public MAP()
         {
             //search the map in the directory
             mapFiles = Directory.GetFiles(@".", "*.txt");
         }
 
-        private static void loadMapFromFile(string fileName, HUNTER hunter, List<MONSTER> monsters)
+        private void loadMapFromFile(string fileName, HUNTER hunter, MONSTER_S_ monsters)
         {
             int y = 0;
             foreach (string fileLine in System.IO.File.ReadLines(fileName))
@@ -106,16 +112,17 @@ namespace MonsterHunterProjOOPII
                     //if the actual position is a player
                     if(fileLineArray[x] == 'H')
                     {
-                        hunter.POSINSCREENX = fileLineArray[x];
+
+                        hunter.POSINSCREENX = x;
                         hunter.POSINSCREENY = y;
-                        fileLineArray[x] = Convert.ToChar("");
+                        mapArray[y][x] = ' ';
                     }
 
                     if(fileLineArray[x] == 'M')
                     {
                         MONSTER monster = new MONSTER(fileLineArray[x], y);
-                        monsters.Add(monster);
-                        fileLineArray[x] = Convert.ToChar("");
+                        monsters.AddToMonstersList(monster);
+                        mapArray[y][x] = ' ';
                     }
 
                 }
@@ -166,7 +173,10 @@ namespace MonsterHunterProjOOPII
             }
         }
 
-
+        public void GlobalLoadAMapFromFile(string fileName, HUNTER hunter, MONSTER_S_ monsters)
+        {
+            loadMapFromFile(fileName, hunter, monsters);
+        }
 
     }
 }
