@@ -130,6 +130,7 @@ namespace ConsoleApp
                         Console.Write('H');
                     }
                     //if we draw the monster
+                    //I HAVE TO FINISH DRAWING THE MONSTER
                     else if(map[Y][X] == 'M')
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
