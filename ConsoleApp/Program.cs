@@ -91,6 +91,8 @@ namespace ConsoleApp
             DrawMap(map.mapArray, hunter, monster_S);
 
             Console.ReadLine();
+            
+            
 
 
 
@@ -120,8 +122,7 @@ namespace ConsoleApp
                 for (int X = 0; X < map[Y].Length; X++)
                 {
                     Console.ForegroundColor = ConsoleColor.Gray;
-                    //if we draw the player
-                    //if (map[Y][X] == 'H')
+                    //if player was found
                     if (X == hunter.POSINSCREENX && Y == hunter.POSINSCREENY)
                     {
                         Console.SetCursorPosition(X, Y);
@@ -129,13 +130,13 @@ namespace ConsoleApp
                         //draw the char at this position in the array
                         Console.Write('H');
                     }
-                    //if we draw the monster
-                    //I HAVE TO FINISH DRAWING THE MONSTER
-                    else if(map[Y][X] == 'M')
+                    //if monster was found
+                    //else if(map[Y][X] == 'M')
+                    else if (X == monsters.ReturnMonsterX(monsters.ReturnMonsterList(), X) && Y == monsters.ReturnMonsterY(monsters.ReturnMonsterList(), Y))
                     {
+                        Console.SetCursorPosition(X, Y);
                         Console.ForegroundColor = ConsoleColor.Red;
                         //draw the char at this position in the array
-                        //Console.Write(map[Y][X]);
                         Console.Write('M');
                     }
                     else
@@ -143,11 +144,11 @@ namespace ConsoleApp
                         //Go back to color gray
                         Console.Write(map[Y][X]);
 
-                    }
-                    
+                    } 
 
                 }
                 Console.WriteLine();
+                
             }
 
         }

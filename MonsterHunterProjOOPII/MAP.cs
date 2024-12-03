@@ -10,6 +10,8 @@ namespace MonsterHunterProjOOPII
     //git hub test
     public class MAP
     {
+        //test
+
         //const
         const int MAX_MAP_WIDTH = 75;
         const int MAX_MAP_HEIGHT = 35;
@@ -97,6 +99,7 @@ namespace MonsterHunterProjOOPII
         private void loadMapFromFile(string fileName, HUNTER hunter, MONSTER_S_ monsters)
         {
             int y = 0;
+     
             foreach (string fileLine in System.IO.File.ReadLines(fileName))
             {
                 //convert the string into a char array
@@ -120,9 +123,10 @@ namespace MonsterHunterProjOOPII
 
                     if(fileLineArray[x] == 'M')
                     {
-                        MONSTER monster = new MONSTER(fileLineArray[x], y);
+                        MONSTER monster = new MONSTER(x, y);
                         monsters.AddToMonstersList(monster);
                         mapArray[y][x] = ' ';
+                        
                     }
 
                 }
@@ -171,6 +175,7 @@ namespace MonsterHunterProjOOPII
 
                 throw new Exception("An error occured in the DLL (Assigning map's width)", e);
             }
+            
         }
 
         public void GlobalLoadAMapFromFile(string fileName, HUNTER hunter, MONSTER_S_ monsters)

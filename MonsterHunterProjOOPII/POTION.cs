@@ -44,11 +44,11 @@ namespace MonsterHunterProjOOPII
                     break;
                 
                 case 4:
-                potionEffect = TypeOfPotion.Invisibility;
+                    potionEffect = TypeOfPotion.Invisibility;
                     break;
                 
                 case 5:
-                potionEffect = TypeOfPotion.Invisibility;
+                    potionEffect = TypeOfPotion.Invisibility;
                     break;
 
                 case 6:
