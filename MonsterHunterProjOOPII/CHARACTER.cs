@@ -224,7 +224,7 @@ namespace MonsterHunterProjOOPII
         }
 
         //methods
-        public abstract bool moveCharacter(int X, int Y);
+        public abstract bool moveCharacter(int X, int Y, MONSTER_S_ monsters, HUNTER hunter, char[][] map);
 
         public bool CheckIfDead(int currentHP)
         {

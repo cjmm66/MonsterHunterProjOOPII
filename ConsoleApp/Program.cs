@@ -10,12 +10,15 @@ namespace ConsoleApp
 {
     class Program
     {
-
+        
         static void Main(string[] args)
         {
             //variables / properties
             int mapNumber = 1;
             int selectedMapNumber = 0;
+            string infoMessage = "";
+
+            
 
 
             //searches the maps in the directory
@@ -90,14 +93,11 @@ namespace ConsoleApp
             map.GlobalLoadAMapFromFile(map.MAPFILES[selectedMapNumber - 1], hunter,monster_S);
             DrawMap(map.mapArray, hunter, monster_S);
 
+            ShowGameInfo(hunter, map, selectedMapNumber, infoMessage);
+
+
             Console.ReadLine();
             
-            
-
-
-
-
-
         }
 
         static void listFiles(string[] mapFiles, int mapNumber)
@@ -153,5 +153,20 @@ namespace ConsoleApp
 
         }
 
+        //have to fix this
+        static void ShowGameInfo(HUNTER hunter, MAP map, int selectedMap, string InfoMessage)
+        {
+            Console.WriteLine($"Player: {hunter.NAME}         Map: {map.MAPFILES[selectedMap - 1]}  ");
+            Console.WriteLine($"HP: {hunter.CURRENTHP}        Level: {map.MAPFILES[selectedMap - 1].IndexOf(Convert.ToChar(selectedMap)) + 2}");
+            Console.WriteLine($"{hunter.HUNTERSCORE}          Infos: {InfoMessage}");//I have to finish implementing info message
+
+
+
+
+        }
+        
+        //static void StartGame(HUNTER hunter, MONSTER )
+
+       
     }
 }

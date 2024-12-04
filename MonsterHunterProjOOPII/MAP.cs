@@ -100,7 +100,7 @@ namespace MonsterHunterProjOOPII
         {
             int y = 0;
      
-            foreach (string fileLine in System.IO.File.ReadLines(fileName))
+            foreach (string fileLine in File.ReadLines(fileName))
             {
                 //convert the string into a char array
                 char[] fileLineArray = fileLine.ToCharArray();
