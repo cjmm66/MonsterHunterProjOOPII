@@ -7,11 +7,16 @@ using MonsterHunterProjOOPII;
 using System.IO;
 using System.Threading;
 
+//For the infoMessage
+//do an array
+//replace[0] with [1] and so on
+//so the array [2] gest the new message
+
 namespace ConsoleApp
 {
     class Program
     {
-        
+
         static bool canMoveMonster = true;
         static bool canMoveHunter = true;
         static ConsoleKeyInfo keyPressed;
@@ -26,7 +31,7 @@ namespace ConsoleApp
 
 
             //searches the maps in the directory
-            string[] mapFiles = Directory.GetFiles(@".", "*.txt"); 
+            string[] mapFiles = Directory.GetFiles(@".", "*.txt");
 
             //creates a HUNTER object
             HUNTER hunter = new HUNTER(0, 0);
@@ -43,7 +48,7 @@ namespace ConsoleApp
             #region Sets The Name
 
             Console.WriteLine("WELCOME TO MONSTER HUNTER!");
-            do 
+            do
             {
                 Console.Write("Enter the player's name: ");
                 hunter.NAME = Console.ReadLine();
@@ -60,7 +65,7 @@ namespace ConsoleApp
                     hunter.checkError = false;
                 }
 
-                
+
             } while (hunter.checkError == true);
             Console.Clear();
             #endregion
@@ -93,17 +98,17 @@ namespace ConsoleApp
                     Console.Clear();
                 }
 
-            }while(selectedMapNumber > map.MAPFILES.Length || selectedMapNumber <= 0);
+            } while (selectedMapNumber > map.MAPFILES.Length || selectedMapNumber <= 0);
             Console.Clear();
             #endregion
 
-            map.GlobalLoadAMapFromFile(map.MAPFILES[selectedMapNumber - 1], hunter,monster_S);
+            map.GlobalLoadAMapFromFile(map.MAPFILES[selectedMapNumber - 1], hunter, monster_S);
             DrawMap(map.mapArray, hunter, monster_S);
 
             ShowGameInfo(hunter, map, selectedMapNumber, infoMessage);
             checkMonsterAndHunter(monster_S, hunter);
 
-            while(gameOn)
+            while (gameOn)
             {
                 MoveMonster(canMoveMonster, monster_S, map, hunter);
 
@@ -111,7 +116,7 @@ namespace ConsoleApp
 
             }
             Console.ReadLine();
-            
+
         }
 
         static void listFiles(string[] mapFiles, int mapNumber)
@@ -158,11 +163,11 @@ namespace ConsoleApp
                         //Go back to color gray
                         Console.Write(map[Y][X]);
 
-                    } 
+                    }
 
                 }
                 Console.WriteLine();
-                
+
             }
 
         }
@@ -181,25 +186,26 @@ namespace ConsoleApp
 
         static void MoveMonster(bool canMove, MONSTER_S_ monsters, MAP map, HUNTER hunter)
         {
-            if(canMove)
+            if (canMove)
             {
 
                 //bool doneMoving = false;
                 foreach (MONSTER thisMonster in monsters.ReturnMonsterList())
                 {
+
                     thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
 
                     if (thisMonster.monsterDirection == MONSTER.Direction.Left)
                     {
-                        if(thisMonster.POSINSCREENX == 0 || thisMonster.POSINSCREENX-1 < 0)
+                        if (thisMonster.POSINSCREENX == 0 || thisMonster.POSINSCREENX - 1 < 0)
                         {
                             thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                         }
-                        else if (map.mapArray[thisMonster.POSINSCREENY][thisMonster.POSINSCREENX-1] == '#')
+                        else if (map.mapArray[thisMonster.POSINSCREENY][thisMonster.POSINSCREENX - 1] == '#')
                         {
                             thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                         }
-                        else if(thisMonster.POSINSCREENX-1 == hunter.POSINSCREENX && thisMonster.POSINSCREENY == hunter.POSINSCREENY)
+                        else if (thisMonster.POSINSCREENX - 1 == hunter.POSINSCREENX && thisMonster.POSINSCREENY == hunter.POSINSCREENY)
                         {
                             thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                         }
@@ -208,24 +214,24 @@ namespace ConsoleApp
 
                             Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
                             Console.Write(' ');
-                            thisMonster.POSINSCREENX = thisMonster.POSINSCREENX-1;
+                            thisMonster.POSINSCREENX = thisMonster.POSINSCREENX - 1;
                             Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write('M');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartMonsterSleepThread(thisMonster);
                         }
-                            
-                        
+
+
                     }
 
                     if (thisMonster.monsterDirection == MONSTER.Direction.Right)
                     {
-                        if(thisMonster.POSINSCREENX == 0 || thisMonster.POSINSCREENX+1 > map.mapWIDTH)
+                        if (thisMonster.POSINSCREENX == 0 || thisMonster.POSINSCREENX + 1 > map.mapWIDTH)
                         {
                             thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                         }
-                        else if (map.mapArray[thisMonster.POSINSCREENY][thisMonster.POSINSCREENX +1] == '#')
+                        else if (map.mapArray[thisMonster.POSINSCREENY][thisMonster.POSINSCREENX + 1] == '#')
                         {
                             thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                         }
@@ -238,20 +244,20 @@ namespace ConsoleApp
 
                             Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
                             Console.Write(' ');
-                            thisMonster.POSINSCREENX = thisMonster.POSINSCREENX+1;
+                            thisMonster.POSINSCREENX = thisMonster.POSINSCREENX + 1;
                             Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write('M');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartMonsterSleepThread(thisMonster);
                         }
-                        
-                        
+
+
                     }
 
                     if (thisMonster.monsterDirection == MONSTER.Direction.Up)
                     {
-                        if(thisMonster.POSINSCREENY == 0 || thisMonster.POSINSCREENY-1 < 0)
+                        if (thisMonster.POSINSCREENY == 0 || thisMonster.POSINSCREENY - 1 < 0)
                         {
                             thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                         }
@@ -259,37 +265,37 @@ namespace ConsoleApp
                         {
                             thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                         }
-                        else if (thisMonster.POSINSCREENX == hunter.POSINSCREENX && thisMonster.POSINSCREENY-1 == hunter.POSINSCREENY)
+                        else if (thisMonster.POSINSCREENX == hunter.POSINSCREENX && thisMonster.POSINSCREENY - 1 == hunter.POSINSCREENY)
                         {
                             thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                         }
                         else
                         {
 
-                            
+
                             Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
                             Console.Write(' ');
-                            thisMonster.POSINSCREENY = thisMonster.POSINSCREENY -1;
+                            thisMonster.POSINSCREENY = thisMonster.POSINSCREENY - 1;
                             Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write('M');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartMonsterSleepThread(thisMonster);
                         }
-                        
+
                     }
 
                     if (thisMonster.monsterDirection == MONSTER.Direction.Down)
                     {
-                        if(thisMonster.POSINSCREENY == 0 || thisMonster.POSINSCREENY+1 > map.mapHEIGHT)
+                        if (thisMonster.POSINSCREENY == 0 || thisMonster.POSINSCREENY + 1 > map.mapHEIGHT)
                         {
                             thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                         }
-                        else if (map.mapArray[thisMonster.POSINSCREENY+1][thisMonster.POSINSCREENX] == '#')
+                        else if (map.mapArray[thisMonster.POSINSCREENY + 1][thisMonster.POSINSCREENX] == '#')
                         {
                             thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                         }
-                        else if (thisMonster.POSINSCREENX == hunter.POSINSCREENX && thisMonster.POSINSCREENY +1 == hunter.POSINSCREENY)
+                        else if (thisMonster.POSINSCREENX == hunter.POSINSCREENX && thisMonster.POSINSCREENY + 1 == hunter.POSINSCREENY)
                         {
                             thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                         }
@@ -298,15 +304,15 @@ namespace ConsoleApp
 
                             Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
                             Console.Write(' ');
-                            thisMonster.POSINSCREENY = thisMonster.POSINSCREENY+1;
+                            thisMonster.POSINSCREENY = thisMonster.POSINSCREENY + 1;
                             Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write('M');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartMonsterSleepThread(thisMonster);
                         }
-                        
-                        
+
+
                     }
                     //thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
                     //StartMonsterSleepThread(thisMonster, canMove);
@@ -346,10 +352,10 @@ namespace ConsoleApp
         static void checkMonsterAndHunter(MONSTER_S_ monsters, HUNTER hunter)
         {
             //checks if a Monster ha a player on it's side and attacks
-            foreach(MONSTER monster in monsters.ReturnMonsterList())
+            foreach (MONSTER monster in monsters.ReturnMonsterList())
             {
                 //check up
-                if(monster.POSINSCREENY - 1 == hunter.POSINSCREENY && monster.POSINSCREENX == hunter.POSINSCREENX)
+                if (monster.POSINSCREENY - 1 == hunter.POSINSCREENY && monster.POSINSCREENX == hunter.POSINSCREENX)
                 {
                     Attack(hunter, monster);
                 }
@@ -361,7 +367,7 @@ namespace ConsoleApp
                 }
 
                 //check left
-                if (monster.POSINSCREENY == hunter.POSINSCREENY && monster.POSINSCREENX -1 == hunter.POSINSCREENX)
+                if (monster.POSINSCREENY == hunter.POSINSCREENY && monster.POSINSCREENX - 1 == hunter.POSINSCREENX)
                 {
                     Attack(hunter, monster);
                 }
@@ -381,7 +387,7 @@ namespace ConsoleApp
         }
 
         //finish monster movement
-        static void MoveMonster(HUNTER hunter) 
+        static void MoveHunter(HUNTER hunter, MAP map,MONSTER_S_ monsters)
         {
             keyPressed = Console.ReadKey();
 
@@ -390,12 +396,14 @@ namespace ConsoleApp
                 switch (keyPressed.Key)
                 {
                     case ConsoleKey.LeftArrow:
-                        if (hunter.POSINSCREENX > 0)
+                        if (hunter.POSINSCREENX > 0 && hunter.POSINSCREENX - 1 > 0
+                            && map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX] != '#'
+                            && monsters.ReturnMonsterX(monsters.ReturnMonsterList()) != hunter.POSINSCREENX)
                         {
                             //wall detection
 
                             //clear the actual player position
-                            Console.SetCursorPosition(playerX, playerY);
+                            Console.SetCursorPosition(hunter.POSINSCREENX, playerY);
                             Console.Write(' ');
                             //move the player to the left in memory
                             playerX--;
@@ -457,6 +465,6 @@ namespace ConsoleApp
 
             }
 
+        }
     }
-
 }
