@@ -5,20 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using MonsterHunterProjOOPII;
 using System.IO;
+using System.Threading;
 
 namespace ConsoleApp
 {
     class Program
     {
         
+        static bool canMoveMonster = true;
+        static bool canMoveHunter = true;
+        static ConsoleKeyInfo keyPressed;
         static void Main(string[] args)
         {
             //variables / properties
             int mapNumber = 1;
             int selectedMapNumber = 0;
             string infoMessage = "";
+            bool gameOn = true;
 
-            
 
 
             //searches the maps in the directory
@@ -32,6 +36,9 @@ namespace ConsoleApp
 
             //creates a Monster(S) object
             MONSTER_S_ monster_S = new MONSTER_S_();
+
+            //creates a Monster
+            //MONSTER monster = new MONSTER(0, 0);
 
             #region Sets The Name
 
@@ -94,8 +101,15 @@ namespace ConsoleApp
             DrawMap(map.mapArray, hunter, monster_S);
 
             ShowGameInfo(hunter, map, selectedMapNumber, infoMessage);
+            checkMonsterAndHunter(monster_S, hunter);
 
+            while(gameOn)
+            {
+                MoveMonster(canMoveMonster, monster_S, map, hunter);
 
+                checkMonsterAndHunter(monster_S, hunter);
+
+            }
             Console.ReadLine();
             
         }
@@ -132,7 +146,7 @@ namespace ConsoleApp
                     }
                     //if monster was found
                     //else if(map[Y][X] == 'M')
-                    else if (X == monsters.ReturnMonsterX(monsters.ReturnMonsterList(), X) && Y == monsters.ReturnMonsterY(monsters.ReturnMonsterList(), Y))
+                    else if (X == monsters.ReturnMonsterX(monsters.ReturnMonsterList()) && Y == monsters.ReturnMonsterY(monsters.ReturnMonsterList()))
                     {
                         Console.SetCursorPosition(X, Y);
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -164,9 +178,285 @@ namespace ConsoleApp
 
 
         }
-        
-        //static void StartGame(HUNTER hunter, MONSTER )
 
-       
+        static void MoveMonster(bool canMove, MONSTER_S_ monsters, MAP map, HUNTER hunter)
+        {
+            if(canMove)
+            {
+
+                //bool doneMoving = false;
+                foreach (MONSTER thisMonster in monsters.ReturnMonsterList())
+                {
+                    thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+
+                    if (thisMonster.monsterDirection == MONSTER.Direction.Left)
+                    {
+                        if(thisMonster.POSINSCREENX == 0 || thisMonster.POSINSCREENX-1 < 0)
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else if (map.mapArray[thisMonster.POSINSCREENY][thisMonster.POSINSCREENX-1] == '#')
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else if(thisMonster.POSINSCREENX-1 == hunter.POSINSCREENX && thisMonster.POSINSCREENY == hunter.POSINSCREENY)
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else
+                        {
+
+                            Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
+                            Console.Write(' ');
+                            thisMonster.POSINSCREENX = thisMonster.POSINSCREENX-1;
+                            Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write('M');
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            StartMonsterSleepThread(thisMonster);
+                        }
+                            
+                        
+                    }
+
+                    if (thisMonster.monsterDirection == MONSTER.Direction.Right)
+                    {
+                        if(thisMonster.POSINSCREENX == 0 || thisMonster.POSINSCREENX+1 > map.mapWIDTH)
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else if (map.mapArray[thisMonster.POSINSCREENY][thisMonster.POSINSCREENX +1] == '#')
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else if (thisMonster.POSINSCREENX + 1 == hunter.POSINSCREENX && thisMonster.POSINSCREENY == hunter.POSINSCREENY)
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else
+                        {
+
+                            Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
+                            Console.Write(' ');
+                            thisMonster.POSINSCREENX = thisMonster.POSINSCREENX+1;
+                            Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write('M');
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            StartMonsterSleepThread(thisMonster);
+                        }
+                        
+                        
+                    }
+
+                    if (thisMonster.monsterDirection == MONSTER.Direction.Up)
+                    {
+                        if(thisMonster.POSINSCREENY == 0 || thisMonster.POSINSCREENY-1 < 0)
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else if (map.mapArray[thisMonster.POSINSCREENY - 1][thisMonster.POSINSCREENX] == '#')
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else if (thisMonster.POSINSCREENX == hunter.POSINSCREENX && thisMonster.POSINSCREENY-1 == hunter.POSINSCREENY)
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else
+                        {
+
+                            
+                            Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
+                            Console.Write(' ');
+                            thisMonster.POSINSCREENY = thisMonster.POSINSCREENY -1;
+                            Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write('M');
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            StartMonsterSleepThread(thisMonster);
+                        }
+                        
+                    }
+
+                    if (thisMonster.monsterDirection == MONSTER.Direction.Down)
+                    {
+                        if(thisMonster.POSINSCREENY == 0 || thisMonster.POSINSCREENY+1 > map.mapHEIGHT)
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else if (map.mapArray[thisMonster.POSINSCREENY+1][thisMonster.POSINSCREENX] == '#')
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else if (thisMonster.POSINSCREENX == hunter.POSINSCREENX && thisMonster.POSINSCREENY +1 == hunter.POSINSCREENY)
+                        {
+                            thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                        }
+                        else
+                        {
+
+                            Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
+                            Console.Write(' ');
+                            thisMonster.POSINSCREENY = thisMonster.POSINSCREENY+1;
+                            Console.SetCursorPosition(thisMonster.POSINSCREENX, thisMonster.POSINSCREENY);
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write('M');
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            StartMonsterSleepThread(thisMonster);
+                        }
+                        
+                        
+                    }
+                    //thisMonster.monsterDirection = thisMonster.ReturnRandomDirection();
+                    //StartMonsterSleepThread(thisMonster, canMove);
+                }
+
+            }
+        }
+
+        static void StartMonsterSleepThread(MONSTER monster)
+        {
+            Thread moveUpThread = new Thread(new ThreadStart(() => MonsterSleep(monster.freezeTme)));
+            moveUpThread.IsBackground = true;//if close main thread, it will close the child thread
+            moveUpThread.Start();
+        }
+
+        static void StartHunterSleepThread(MONSTER monster)
+        {
+            Thread moveUpThread = new Thread(new ThreadStart(() => MonsterSleep(monster.freezeTme)));
+            moveUpThread.IsBackground = true;//if close main thread, it will close the child thread
+            moveUpThread.Start();
+        }
+
+        static void MonsterSleep(int freezeTime)
+        {
+            canMoveMonster = false;
+            Thread.Sleep(freezeTime);//sleeping in the child thread does not freeze the game
+            canMoveMonster = true;
+        }
+
+        static void HunterSleep(int freezeTime)
+        {
+            canMoveHunter = false;
+            Thread.Sleep(freezeTime);//sleeping in the child thread does not freeze the game
+            canMoveHunter = true;
+        }
+
+        static void checkMonsterAndHunter(MONSTER_S_ monsters, HUNTER hunter)
+        {
+            //checks if a Monster ha a player on it's side and attacks
+            foreach(MONSTER monster in monsters.ReturnMonsterList())
+            {
+                //check up
+                if(monster.POSINSCREENY - 1 == hunter.POSINSCREENY && monster.POSINSCREENX == hunter.POSINSCREENX)
+                {
+                    Attack(hunter, monster);
+                }
+
+                //check bottom
+                if (monster.POSINSCREENY + 1 == hunter.POSINSCREENY && monster.POSINSCREENX == hunter.POSINSCREENX)
+                {
+                    Attack(hunter, monster);
+                }
+
+                //check left
+                if (monster.POSINSCREENY == hunter.POSINSCREENY && monster.POSINSCREENX -1 == hunter.POSINSCREENX)
+                {
+                    Attack(hunter, monster);
+                }
+
+                //check right
+                if (monster.POSINSCREENY == hunter.POSINSCREENY && monster.POSINSCREENX + 1 == hunter.POSINSCREENX)
+                {
+                    Attack(hunter, monster);
+                }
+            }
+        }
+
+        static void Attack(HUNTER hunter, MONSTER monster)
+        {
+            //calculates the amount of damage inflicted
+            monster.STRENGHT -= hunter.ARMOR;
+        }
+
+        //finish monster movement
+        static void MoveMonster(HUNTER hunter) 
+        {
+            keyPressed = Console.ReadKey();
+
+            if (canMoveMonster)
+            {
+                switch (keyPressed.Key)
+                {
+                    case ConsoleKey.LeftArrow:
+                        if (hunter.POSINSCREENX > 0)
+                        {
+                            //wall detection
+
+                            //clear the actual player position
+                            Console.SetCursorPosition(playerX, playerY);
+                            Console.Write(' ');
+                            //move the player to the left in memory
+                            playerX--;
+                            //draw player at new position
+                            Console.SetCursorPosition(playerX, playerY);
+                            Console.Write('P');
+                            StartPlayerSleepThread();
+                        }
+                        break;
+
+                    case ConsoleKey.RightArrow:
+                        if (playerX < mapArray[playerY].Length - 1)
+                        {
+                            //wall detection
+
+                            //clear the actual player position
+                            Console.SetCursorPosition(playerX, playerY);
+                            Console.Write(' ');
+                            //move the player to the left in memory
+                            playerX++;
+                            //draw player at new position
+                            Console.SetCursorPosition(playerX, playerY);
+                            Console.Write('P');
+                            StartPlayerSleepThread();
+                        }
+                        break;
+
+                    case ConsoleKey.UpArrow:
+                        if (playerY > 0)
+                        {
+                            //clear the actual player position
+                            Console.SetCursorPosition(playerX, playerY);
+                            Console.Write(' ');
+                            //Move the player to the left in memory
+                            playerY--;
+                            //draw player at new position
+                            Console.SetCursorPosition(playerX, playerY);
+                            Console.Write('P');
+                            StartPlayerSleepThread();
+                        }
+                        break;
+
+                    case ConsoleKey.DownArrow:
+                        if (playerY < mapArray.GetLength(0) - 1)
+                        {
+                            //clear the actual player position
+                            Console.SetCursorPosition(playerX, playerY);
+                            Console.Write(' ');
+                            //move the player down in memory
+                            playerY++;
+                            //draw player at new position
+                            Console.SetCursorPosition(playerX, playerY);
+                            Console.Write('P');
+                            StartPlayerSleepThread();
+                        }
+                        break;
+                }
+
+
+            }
+
     }
+
 }

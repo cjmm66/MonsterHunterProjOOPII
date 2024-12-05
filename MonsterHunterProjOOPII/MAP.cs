@@ -24,7 +24,7 @@ namespace MonsterHunterProjOOPII
         //public get/set
         public static string mapValidationError = "";
 
-        public  static int mapWIDTH
+        public  int mapWIDTH
         {
             get { return mapWidth; }
             private set
@@ -53,7 +53,7 @@ namespace MonsterHunterProjOOPII
             }
         }
         
-        public static int mapHEIGHT
+        public int mapHEIGHT
         {
             get { return mapHeight; }
             private set
@@ -145,7 +145,7 @@ namespace MonsterHunterProjOOPII
                 }
                 else
                 {
-                   mapHEIGHT = mapArray.Length;
+                   this.mapHEIGHT = mapArray.Length;
                 }
 
             }
@@ -166,7 +166,7 @@ namespace MonsterHunterProjOOPII
                 }
                 else
                 {
-                    mapWIDTH = mapArray[0].Length;
+                    this.mapWIDTH = mapArray[0].Length;
                 }
 
             }

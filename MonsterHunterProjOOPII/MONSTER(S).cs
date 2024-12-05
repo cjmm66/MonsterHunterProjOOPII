@@ -24,31 +24,31 @@ namespace MonsterHunterProjOOPII
             return allMonsters.FindAll(monster => monster.POSINSCREENX == X && monster.POSINSCREENY == Y);
         }
 
-        public int ReturnMonsterX(List<MONSTER> monsterList, int X)
+        public int ReturnMonsterX(List<MONSTER> monsterList)//, int X)
         {
             int safeReturn = -1;
             foreach(MONSTER monster in monsterList)
             {
-                if(monster.POSINSCREENX == X)
-                {
+                //if(monster.POSINSCREENX == X)
+                //{
                     return monster.POSINSCREENX;
-                }
-                break;
+                //}
+                //break;
             }
             return safeReturn;
         }
 
-        public int ReturnMonsterY(List<MONSTER> monsterList, int Y)
+        public int ReturnMonsterY(List<MONSTER> monsterList)//, int Y)
         {
             int safeRetrun = -1;
             foreach (MONSTER monster in monsterList)
             {
-                if(monster.POSINSCREENY == Y)
-                {
+                //if(monster.POSINSCREENY == Y)
+                //{
                     safeRetrun = monster.POSINSCREENY;
                     return monster.POSINSCREENY;
-                }
-                break;
+                //}
+                //break;
             }
             return safeRetrun;
         }
