@@ -111,7 +111,7 @@ namespace ConsoleApp
             while (gameOn)
             {
                 MoveMonster(canMoveMonster, monster_S, map, hunter);
-
+                MoveHunter(hunter, map, monster_S);
                 checkMonsterAndHunter(monster_S, hunter);
 
             }
@@ -328,9 +328,9 @@ namespace ConsoleApp
             moveUpThread.Start();
         }
 
-        static void StartHunterSleepThread(MONSTER monster)
+        static void StartHunterSleepThread(HUNTER hunter)
         {
-            Thread moveUpThread = new Thread(new ThreadStart(() => MonsterSleep(monster.freezeTme)));
+            Thread moveUpThread = new Thread(new ThreadStart(() => HunterSleep(hunter.freezeTme)));
             moveUpThread.IsBackground = true;//if close main thread, it will close the child thread
             moveUpThread.Start();
         }
@@ -386,81 +386,111 @@ namespace ConsoleApp
             monster.STRENGHT -= hunter.ARMOR;
         }
 
+        static void CheckPotion(HUNTER hunter, MAP map)
+        {
+            if(map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX] == 'p')
+            {
+                POTION potion = new POTION(hunter);
+            }
+        }
+
         //finish monster movement
         static void MoveHunter(HUNTER hunter, MAP map,MONSTER_S_ monsters)
         {
             keyPressed = Console.ReadKey();
 
-            if (canMoveMonster)
+            if (canMoveHunter)
             {
                 switch (keyPressed.Key)
                 {
                     case ConsoleKey.LeftArrow:
-                        if (hunter.POSINSCREENX > 0 && hunter.POSINSCREENX - 1 > 0
-                            && map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX] != '#'
-                            && monsters.ReturnMonsterX(monsters.ReturnMonsterList()) != hunter.POSINSCREENX)
+                        if (hunter.POSINSCREENX > 0
+                            && map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX -1] != '#'
+                             && !monsters.ReturnMonsterList().Exists
+                            (monster => monster.POSINSCREENX == hunter.POSINSCREENX-1 
+                            && monster.POSINSCREENY == hunter.POSINSCREENY - 1))
+
                         {
-                            //wall detection
 
                             //clear the actual player position
-                            Console.SetCursorPosition(hunter.POSINSCREENX, playerY);
+                            Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
                             Console.Write(' ');
                             //move the player to the left in memory
-                            playerX--;
+                            hunter.POSINSCREENX--;
                             //draw player at new position
-                            Console.SetCursorPosition(playerX, playerY);
-                            Console.Write('P');
-                            StartPlayerSleepThread();
+                            Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write('M');
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            StartHunterSleepThread(hunter);
                         }
                         break;
 
                     case ConsoleKey.RightArrow:
-                        if (playerX < mapArray[playerY].Length - 1)
+                        if (hunter.POSINSCREENX > 0 && hunter.POSINSCREENX + 1 < map.mapArray[hunter.POSINSCREENY].Length-1
+                            && map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX+1] != '#'
+                             && !monsters.ReturnMonsterList().Exists
+                            (monster => monster.POSINSCREENX == hunter.POSINSCREENX+1 
+                            && monster.POSINSCREENY == hunter.POSINSCREENY))
                         {
-                            //wall detection
-
                             //clear the actual player position
-                            Console.SetCursorPosition(playerX, playerY);
+                            Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
                             Console.Write(' ');
                             //move the player to the left in memory
-                            playerX++;
+                            hunter.POSINSCREENX++;
                             //draw player at new position
-                            Console.SetCursorPosition(playerX, playerY);
-                            Console.Write('P');
-                            StartPlayerSleepThread();
+                            Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write('M');
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            StartHunterSleepThread(hunter);
                         }
                         break;
 
                     case ConsoleKey.UpArrow:
-                        if (playerY > 0)
+                        if (hunter.POSINSCREENY > 0
+                            && map.mapArray[hunter.POSINSCREENY-1][hunter.POSINSCREENX] != '#'
+                            && !monsters.ReturnMonsterList().Exists
+                            (monster => monster.POSINSCREENX ==hunter.POSINSCREENX 
+                            && monster.POSINSCREENY == hunter.POSINSCREENY -1))
                         {
                             //clear the actual player position
-                            Console.SetCursorPosition(playerX, playerY);
+                            Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
                             Console.Write(' ');
-                            //Move the player to the left in memory
-                            playerY--;
+                            //move the player to the left in memory
+                            hunter.POSINSCREENY--;
                             //draw player at new position
-                            Console.SetCursorPosition(playerX, playerY);
-                            Console.Write('P');
-                            StartPlayerSleepThread();
+                            Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write('M');
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            StartHunterSleepThread(hunter);
                         }
                         break;
 
                     case ConsoleKey.DownArrow:
-                        if (playerY < mapArray.GetLength(0) - 1)
+                        if (hunter.POSINSCREENY > 0 && hunter.POSINSCREENY + 1 < map.mapArray.GetLength(0)-1
+                            && map.mapArray[hunter.POSINSCREENY + 1][hunter.POSINSCREENX] != '#'
+                            && !monsters.ReturnMonsterList().Exists
+                            (monster => monster.POSINSCREENX == hunter.POSINSCREENX 
+                            && monster.POSINSCREENY == hunter.POSINSCREENY + 1))
                         {
                             //clear the actual player position
-                            Console.SetCursorPosition(playerX, playerY);
+                            Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
                             Console.Write(' ');
-                            //move the player down in memory
-                            playerY++;
+                            //move the player to the left in memory
+                            hunter.POSINSCREENY++;
                             //draw player at new position
-                            Console.SetCursorPosition(playerX, playerY);
-                            Console.Write('P');
-                            StartPlayerSleepThread();
+                            Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write('M');
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            StartHunterSleepThread(hunter);
                         }
                         break;
                 }
+
+
 
 
             }

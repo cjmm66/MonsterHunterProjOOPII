@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonsterHunterProjOOPII
 {
-    class POTION
+    public class POTION
     {
         //const
         const int MIN_POTION = 1;
@@ -24,7 +24,8 @@ namespace MonsterHunterProjOOPII
 
         public TypeOfPotion potionEffect;
         
-        public POTION()
+        //HACER COLORES PARA CUANDO CAMBIE EL EFECTO
+        public POTION(HUNTER hunter)
         {
             int numChosen;
             numChosen = RNG.Instance.Next(MIN_POTION, MAX_POTION);
@@ -33,18 +34,22 @@ namespace MonsterHunterProjOOPII
             {
                 case 1:
                     potionEffect = TypeOfPotion.Poisoned;
+                    hunter.state = PoisonedState.getInstance();
                     break;
                 
                 case 2:
                     potionEffect = TypeOfPotion.Speed;
+                    hunter.state = FastState.getInstance();
                     break;
 
                 case 3:
                     potionEffect = TypeOfPotion.Speed;
+                    hunter.state = FastState.getInstance();
                     break;
                 
                 case 4:
                     potionEffect = TypeOfPotion.Invisibility;
+                    //hunter.state = InvisibleState.getInstance();
                     break;
                 
                 case 5:
@@ -53,6 +58,7 @@ namespace MonsterHunterProjOOPII
 
                 case 6:
                     potionEffect = TypeOfPotion.Strenght;
+                    hunter.state = StrongState.getInstance();
                     break;
 
             }
