@@ -152,5 +152,17 @@ namespace MonsterHunterProjOOPII
             }
         }
 
+        public void ResetValues()
+        {
+            this.POSINSCREENX = 0;
+            this.POSINSCREENY = 0;
+            this.CURRENTHP = this.maxHP;
+            this.STRENGHT = this.normalHunterArmor;
+            this.STRENGHT = this.normalHunterStrenght;
+            this.HUNTERSCORE = 0;
+            this.NAME = "";
+            this.state = NormalState.getInstance();
+        }
+
     }
 }

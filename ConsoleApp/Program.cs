@@ -19,13 +19,21 @@ namespace ConsoleApp
         static bool canMoveMonster = true;
         static bool canMoveHunter = true;
         static ConsoleKeyInfo keyPressed;
+        static bool gameOn = true;
+        static string decide;
+        static int intDecide = 1;
+        static bool gameLoop = true;
+        //creates static weapons
+        static SHIELD shield;
+        static SWORD sword;
+        static PICKAXE pickaxe;
+
         static void Main(string[] args)
         {
             //variables / properties
             int mapNumber = 1;
             int selectedMapNumber = 0;
             string infoMessage = "";
-            bool gameOn = true;
 
             //searches the maps in the directory
             string[] mapFiles = Directory.GetFiles(@".", "*.txt");
@@ -34,83 +42,113 @@ namespace ConsoleApp
             HUNTER hunter = new HUNTER(0, 0);
 
             //creates a MAP object
-            MAP map = new MAP();
+            MAP map;
 
             //creates a Monster(S) object
             MONSTER_S_ monster_S = new MONSTER_S_();
 
+
+
             //creates a Monster
             //MONSTER monster = new MONSTER(0, 0);
 
-            #region Sets The Name
+            gameLoop = true;
+            intDecide = 1;
 
-            Console.WriteLine("WELCOME TO MONSTER HUNTER!");
-            do
+
+            while(gameLoop)
             {
-                Console.Write("Enter the player's name: ");
-                hunter.NAME = Console.ReadLine();
-                if (hunter.hunterValidationError != "")
+
+                switch (intDecide)
                 {
-                    hunter.checkError = true;
-                    Console.WriteLine(hunter.hunterValidationError);
-                    Console.WriteLine("Press any key to retry...");
-                    Console.ReadLine();
+                    case 1:
+                    //reset values
+                    gameOn = true;
+                    hunter.ResetValues();
+                    monster_S.ResetList();
+                    
+                    map = new MAP();
+
+
+                        #region Sets The Name
+
+                    Console.WriteLine("WELCOME TO MONSTER HUNTER!");
+                    do
+                    {
+                        Console.Write("Enter the player's name: ");
+                        hunter.NAME = Console.ReadLine();
+                        if (hunter.hunterValidationError != "")
+                        {
+                            hunter.checkError = true;
+                            Console.WriteLine(hunter.hunterValidationError);
+                            Console.WriteLine("Press any key to retry...");
+                            Console.ReadLine();
+                            Console.Clear();
+                        }
+                        else
+                        {
+                            hunter.checkError = false;
+                        }
+
+
+                    } while (hunter.checkError == true);
                     Console.Clear();
-                }
-                else
-                {
-                    hunter.checkError = false;
-                }
+                    #endregion
 
+                        #region Shows Map and User Selects a Map
 
-            } while (hunter.checkError == true);
-            Console.Clear();
-            #endregion
+                    Console.WriteLine($"WELCOME {hunter.NAME}");
+                    Console.WriteLine("Please choose a map from the list below");
+                    do
+                    {
+                        //list all the files on the screen
+                        listFiles(map.MAPFILES, mapNumber);
+                        Console.Write("Please type the number of the map you want to play at: ");
+                        string selectedMapString = Console.ReadLine();
+                        if (!int.TryParse(selectedMapString, out selectedMapNumber))
+                        {
+                            //it's not a number
+                            Console.WriteLine("That's not a number");
+                            Console.WriteLine("Press a key to try again");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
 
-            #region Shows Map and User Selects a Map
+                        if (selectedMapNumber > map.MAPFILES.Length || selectedMapNumber == 0)
+                        {
+                            //the number is larger than the available maps
+                            Console.WriteLine($"There are {map.MAPFILES.Length} map(s)");
+                            Console.WriteLine("Press a key to try again");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
 
-            Console.WriteLine($"WELCOME {hunter.NAME}");
-            Console.WriteLine("Please choose a map from the list below");
-            do
-            {
-                //list all the files on the screen
-                listFiles(map.MAPFILES, mapNumber);
-                Console.Write("Please type the number of the map you want to play at: ");
-                string selectedMapString = Console.ReadLine();
-                if (!int.TryParse(selectedMapString, out selectedMapNumber))
-                {
-                    //it's not a number
-                    Console.WriteLine("That's not a number");
-                    Console.WriteLine("Press a key to try again");
-                    Console.ReadKey();
+                    } while (selectedMapNumber > map.MAPFILES.Length || selectedMapNumber <= 0);
                     Console.Clear();
+                    #endregion
+
+                        map.GlobalLoadAMapFromFile(map.MAPFILES[selectedMapNumber - 1], hunter, monster_S);
+                        DrawMap(map.mapArray, hunter, monster_S);
+                        ShowGameInfo(hunter, map, selectedMapNumber, infoMessage);
+                        while (gameOn)
+                        {
+                            MoveMonster(canMoveMonster, monster_S, map, hunter);
+                            MoveHunter(hunter, map, monster_S);
+                            CheckPotion(hunter, map);
+                            CheckIfWeaponFound(hunter, map);
+                            checkMonsterAndHunter(monster_S, hunter);
+
+                        }
+                        AskUserForNewGame();
+                        map.resetMapArray(map.MAPFILES);
+                        break;
+
+                    case 2:
+                        gameLoop = false;
+                        break;
                 }
-
-                if (selectedMapNumber > map.MAPFILES.Length || selectedMapNumber == 0)
-                {
-                    //the number is larger than the available maps
-                    Console.WriteLine($"There are {map.MAPFILES.Length} map(s)");
-                    Console.WriteLine("Press a key to try again");
-                    Console.ReadKey();
-                    Console.Clear();
-                }
-
-            } while (selectedMapNumber > map.MAPFILES.Length || selectedMapNumber <= 0);
-            Console.Clear();
-            #endregion
-
-            map.GlobalLoadAMapFromFile(map.MAPFILES[selectedMapNumber - 1], hunter, monster_S);
-
-            DrawMap(map.mapArray, hunter, monster_S);
-            while (gameOn)
-            {
-                ShowGameInfo(hunter, map, selectedMapNumber, infoMessage);
-                MoveMonster(canMoveMonster, monster_S, map, hunter);
-                MoveHunter(hunter, map, monster_S);
-                CheckPotion(hunter, map);
-                checkMonsterAndHunter(monster_S, hunter);
-
             }
+            Console.WriteLine("Thankk you for playing!");
             Console.ReadLine();
 
         }
@@ -172,11 +210,11 @@ namespace ConsoleApp
         static void ShowGameInfo(HUNTER hunter, MAP map, int selectedMap, string InfoMessage)
         {
 
-            Console.WriteLine($"Player: {hunter.NAME}");         
+            Console.WriteLine($"Player: {hunter.NAME}");
             Console.WriteLine($"Map: {map.MAPFILES[selectedMap - 1]}");
-            Console.WriteLine($"HP: {hunter.CURRENTHP}");        
+            Console.WriteLine($"HP: {hunter.CURRENTHP}");
             Console.WriteLine($"Level: {map.MAPFILES[selectedMap - 1].IndexOf(Convert.ToChar(selectedMap)) + 2}");
-            Console.WriteLine($"{hunter.HUNTERSCORE}");          
+            Console.WriteLine($"{hunter.HUNTERSCORE}");
             Console.WriteLine($"Infos: {InfoMessage}");//I have to finish implementing info message
 
         }
@@ -379,8 +417,62 @@ namespace ConsoleApp
 
         static void Attack(HUNTER hunter, MONSTER monster)
         {
-            //calculates the amount of damage inflicted
-            monster.STRENGHT -= hunter.ARMOR;
+            //calculates the amount of damage inflicted by the monster
+            if (hunter.hasShield == true)
+            {
+                hunter.CURRENTHP -= monster.STRENGHT - hunter.ARMOR + shield.shieldArmor;
+                hunter.CheckIfDead(hunter.CURRENTHP);
+                if (hunter.CheckIfDead(hunter.CURRENTHP) == true)
+                {
+                    gameOn = false;
+                }
+            }
+            else
+            {
+                hunter.CURRENTHP -= monster.STRENGHT - hunter.ARMOR;
+                hunter.CheckIfDead(hunter.CURRENTHP);
+                if (hunter.CheckIfDead(hunter.CURRENTHP) == true)
+                {
+                    gameOn = false;
+                }
+            }
+
+            //calculates the amount of damage inflicted by the hunter
+            if (hunter.hasSword == true)
+            {
+                monster.CURRENTHP -= hunter.STRENGHT + sword.swordStrenght - monster.ARMOR;
+                monster.CheckIfDead(monster.CURRENTHP);
+            }
+
+        }
+
+        static void AskUserForNewGame()
+        {
+            Console.Clear();
+            Console.WriteLine("Thank you for playing the game!");
+            Console.WriteLine("Do you want to play again?");
+            Console.WriteLine("Enter 1 if yes, o 2 to Exit");
+            decide = Console.ReadLine();
+            if (!int.TryParse(decide, out intDecide))
+            {
+                //it's not a number
+                Console.WriteLine("That's not a number");
+                Console.WriteLine("Press a key to try again");
+                Console.ReadKey();
+                Console.Clear();
+            }
+
+            if (intDecide < 1 || intDecide > 2)
+            {
+                //the number is larger than the available maps
+                Console.WriteLine($"Please enter 1 or 2");
+                Console.WriteLine("Press a key to try again");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            while (intDecide < 1 || intDecide > 2) ;
+            
+        
         }
 
         static void CheckPotion(HUNTER hunter, MAP map)
@@ -398,7 +490,7 @@ namespace ConsoleApp
             {
                 hunter.hasPickaxe = false;
                 hunter.hasShield = false;
-                SWORD sword = new SWORD();
+                sword = new SWORD();
                 hunter.hasSword = true;
 
             }
@@ -407,7 +499,7 @@ namespace ConsoleApp
             {
                 hunter.hasSword = false;
                 hunter.hasPickaxe = false;
-                SHIELD shield = new SHIELD();
+                shield = new SHIELD();
                 hunter.hasShield = true;
 
             }
@@ -416,15 +508,14 @@ namespace ConsoleApp
             {
                 hunter.hasSword = false;
                 hunter.hasShield = false;
-                PICKAXE pickaxe = new PICKAXE();
+                pickaxe = new PICKAXE();
                 hunter.hasPickaxe = true;
 
             }
 
 
         }
-
-        //finish monster movement
+        
         static void MoveHunter(HUNTER hunter, MAP map,MONSTER_S_ monsters)
         {
             keyPressed = Console.ReadKey();
@@ -438,7 +529,7 @@ namespace ConsoleApp
                             && map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX -1] != '#'
                              && !monsters.ReturnMonsterList().Exists
                             (monster => monster.POSINSCREENX == hunter.POSINSCREENX-1 
-                            && monster.POSINSCREENY == hunter.POSINSCREENY - 1))
+                            && monster.POSINSCREENY == hunter.POSINSCREENY))
 
                         {
 
@@ -453,6 +544,10 @@ namespace ConsoleApp
                             Console.Write('H');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartHunterSleepThread(hunter);
+                        }
+                        if(map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX] == 'G')
+                        {
+                            gameOn = false;
                         }
                         break;
 
@@ -474,6 +569,11 @@ namespace ConsoleApp
                             Console.Write('H');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartHunterSleepThread(hunter);
+
+                        }
+                        if (map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX] == 'G')
+                        {
+                            gameOn = false;
                         }
                         break;
 
@@ -495,6 +595,10 @@ namespace ConsoleApp
                             Console.Write('H');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartHunterSleepThread(hunter);
+                            if (map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX] == 'G')
+                            {
+                                gameOn = false;
+                            }
                         }
                         break;
 
@@ -516,6 +620,10 @@ namespace ConsoleApp
                             Console.Write('H');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartHunterSleepThread(hunter);
+                            if (map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX] == 'G')
+                            {
+                                gameOn = false;
+                            }
                         }
                         break;
                 }
@@ -526,5 +634,6 @@ namespace ConsoleApp
             }
 
         }
-    }
+    }   
+    
 }

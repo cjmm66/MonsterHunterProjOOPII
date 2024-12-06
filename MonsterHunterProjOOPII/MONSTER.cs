@@ -30,10 +30,11 @@ namespace MonsterHunterProjOOPII
 
                 return false;
         }
-        
-        
 
 
+        public int maxHp = 30;
+        public int normalMonsterArmor = 4;
+        public int normalMonsterStrenght = 7;
 
         public enum Direction
         {
@@ -74,6 +75,17 @@ namespace MonsterHunterProjOOPII
 
             }
         }
+
+        //public override void ResetValues()
+        //{
+        //    this.POSINSCREENX = 0;
+        //    this.POSINSCREENY = 0;
+        //    this.CURRENTHP = this.maxHp;
+        //    this.STRENGHT = this.normalMonsterArmor;
+        //    this.STRENGHT = this.normalMonsterStrenght;
+
+        //}
+
     }
 }
 

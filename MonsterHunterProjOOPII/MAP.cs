@@ -183,5 +183,14 @@ namespace MonsterHunterProjOOPII
             loadMapFromFile(fileName, hunter, monsters);
         }
 
+        public void resetMapArray(string [] array)
+        {
+            Array.Clear(array, 0, array.Length);
+        }
+
+        
+
+
+
     }
 }

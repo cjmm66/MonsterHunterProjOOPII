@@ -64,5 +64,13 @@ namespace MonsterHunterProjOOPII
             return allMonsters;
         }
 
+        public void ResetList()
+        {
+            for(int i = allMonsters.Count -1; i>=0;i--)
+            {
+                allMonsters.RemoveAt(i);
+            }
+        }
+
     }
 }
