@@ -29,22 +29,22 @@ namespace MonsterHunterProjOOPII
 
         public int calculate_Strenght(HUNTER hunter)
         {
-            return RNG.Instance.Next(0, hunter.STRENGHT);
+            return hunter.STRENGHT = hunter.normalHunterStrenght;
         }
 
         public int calculate_Defense(HUNTER hunter)
         {
-            return RNG.Instance.Next(0, hunter.ARMOR);
+            return hunter.ARMOR = hunter.normalHunterArmor;
         }
 
         public int manage_HP(HUNTER hunter)
         {
-            return hunter.CURRENTHP;
+            return hunter.CURRENTHP = hunter.maxHP;
         }
 
         public int manage_FreezeTime(HUNTER hunter)
         {
-            return hunter.freezeTme;
+            return hunter.freezeTme = hunter.normalHunterFreezeTime;
         }
     }
 
@@ -63,17 +63,17 @@ namespace MonsterHunterProjOOPII
         }
         public int calculate_Strenght(HUNTER hunter)
         {
-            return RNG.Instance.Next(0, hunter.STRENGHT * 2);
+            return hunter.STRENGHT * 2;
         }
 
         public int calculate_Defense(HUNTER hunter)
         {
-            return RNG.Instance.Next(0, hunter.ARMOR * Convert.ToInt32(1.5));
+            return hunter.ARMOR * 2;//I know I had to do 1.5 
         }
 
         public int manage_HP(HUNTER hunter)
         {
-             return hunter.CURRENTHP + (30 - hunter.CURRENTHP); //preguntar por como poner
+            return hunter.CURRENTHP = hunter.maxHP; //preguntar por como poner
                                                                 //el const ahi
         }
 
@@ -98,11 +98,11 @@ namespace MonsterHunterProjOOPII
 
         public int calculate_Strenght(HUNTER hunter)
         {
-            return RNG.Instance.Next(0, hunter.STRENGHT / Convert.ToInt32(0.5));
+            return hunter.STRENGHT / 2;
         }
         public int calculate_Defense(HUNTER hunter)
         {
-            return RNG.Instance.Next(0, hunter.ARMOR / Convert.ToInt32(0.5));
+            return hunter.ARMOR / 2;
         }
         public int manage_HP(HUNTER hunter)
         {
@@ -110,12 +110,12 @@ namespace MonsterHunterProjOOPII
         }
         public int manage_FreezeTime(HUNTER hunter)
         {
-            return hunter.freezeTme += hunter.freezeTme * Convert.ToInt32(1.25);
+            return hunter.freezeTme += hunter.freezeTme * Convert.ToInt32(1.25);//I know this wont work properly
         }
     }
 
     //terminar de implementar InvisibleState 
-    public class InvisibleState
+    public class InvisibleState : IState
     {
         private static InvisibleState instance = null;
         public static InvisibleState getInstance()
@@ -129,12 +129,12 @@ namespace MonsterHunterProjOOPII
 
         public int calculate_Strenght(HUNTER hunter)
         {
-            return RNG.Instance.Next(0, hunter.STRENGHT);
+            return RNG.Instance.Next(0, hunter.STRENGHT+1);
         }
 
         public int calculate_Defense(HUNTER hunter)
         {
-            return RNG.Instance.Next(0, hunter.ARMOR);
+            return RNG.Instance.Next(0, hunter.ARMOR+1);
         }
 
         public int manage_HP(HUNTER hunter)
@@ -162,12 +162,12 @@ namespace MonsterHunterProjOOPII
 
         public int calculate_Strenght(HUNTER hunter)
         {
-            return RNG.Instance.Next(0, hunter.STRENGHT);
+            return hunter.STRENGHT;
         }
 
         public int calculate_Defense(HUNTER hunter)
         {
-            return RNG.Instance.Next(0, hunter.ARMOR);
+            return hunter.ARMOR;
         }
 
         public int manage_HP(HUNTER hunter)

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace MonsterHunterProjOOPII
 {
-    class PICKAXE
+    public class PICKAXE : WEAPON
     {
         const int MIN_CHANCE = 1;
         const int MAX_CHANCE = 4; //+ 1 because of the .Next() max value handlement
 
 
-        public bool CheckIfPickaxeIsBroken()
+        public override bool CheckIfIsBroken(HUNTER hunter)
         {
             int numChosen;
             numChosen = RNG.Instance.Next(MIN_CHANCE, MAX_CHANCE);
@@ -26,6 +26,7 @@ namespace MonsterHunterProjOOPII
                     return false;
 
                 case 2:
+                    hunter.hasPickaxe = false;
                     return true;
 
                 case 3:

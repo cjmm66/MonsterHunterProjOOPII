@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonsterHunterProjOOPII
 {
-    class SWORD
+    public class SWORD : WEAPON
     {
         //const
         const int MIN_STRENGHT = 4;
@@ -25,7 +25,7 @@ namespace MonsterHunterProjOOPII
         }
 
         //methods
-        public bool CheckIfShieldIsBroken()
+        public override bool CheckIfIsBroken(HUNTER hunter)
         {
             int numChosen;
             numChosen = RNG.Instance.Next(MIN_CHANCE, MAX_CHANCE);
@@ -36,6 +36,7 @@ namespace MonsterHunterProjOOPII
                     return false;
 
                 case 1:
+                    hunter.hasSword = false;
                     return true;
 
                 case 2:

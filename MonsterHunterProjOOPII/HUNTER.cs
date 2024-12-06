@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Timers;
 namespace MonsterHunterProjOOPII
 {
     public class HUNTER : CHARACTER
@@ -21,8 +21,18 @@ namespace MonsterHunterProjOOPII
 
         private int hunterScore;
 
+        static private Timer potionTimer;
+
+        static int timePassed = 0;
+
         //public get/set
         public string hunterValidationError = "";
+
+        public int normalHunterArmor = 4;
+        public int normalHunterStrenght = 7;
+        public int normalHunterFreezeTime = 1000;
+
+        public int maxHP = 30;
 
         public IState state; //internal state of the object
 
@@ -89,6 +99,10 @@ namespace MonsterHunterProjOOPII
         }
 
         public char[][] hunterMap;
+
+        public bool hasSword = false;
+        public bool hasShield = false;
+        public bool hasPickaxe = false;
         
         //constructor
         public HUNTER(int positionX, int positionY) : base (positionX, positionY)
@@ -113,7 +127,30 @@ namespace MonsterHunterProjOOPII
             return false;
         }
 
+        public void StartPotionTimer()
+        {
+            timePassed = 0;
+            potionTimer = new Timer(10000);
+            potionTimer.Enabled = true;
+            potionTimer.Elapsed += WhenTimerReaches10Sec;
+            potionTimer.AutoReset = true;
 
- 
+        }
+
+        private void WhenTimerReaches10Sec(object timer, ElapsedEventArgs e)
+        {
+            timePassed++;
+            if (timePassed == 10)
+            {
+                this.state = NormalState.getInstance();
+                this.CURRENTHP = this.state.manage_HP(this);
+                this.STRENGHT = this.state.calculate_Strenght(this);
+                this.ARMOR = this.state.calculate_Defense(this);
+                this.freezeTme = this.state.manage_FreezeTime(this);
+                potionTimer.Stop();
+                potionTimer.Enabled = false;
+            }
+        }
+
     }
 }

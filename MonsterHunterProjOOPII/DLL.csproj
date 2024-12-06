@@ -53,6 +53,7 @@
     <Compile Include="RNG.cs" />
     <Compile Include="SHIELD.cs" />
     <Compile Include="SWORD.cs" />
+    <Compile Include="WEAPON.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

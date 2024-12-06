@@ -16,7 +16,6 @@ namespace ConsoleApp
 {
     class Program
     {
-
         static bool canMoveMonster = true;
         static bool canMoveHunter = true;
         static ConsoleKeyInfo keyPressed;
@@ -27,8 +26,6 @@ namespace ConsoleApp
             int selectedMapNumber = 0;
             string infoMessage = "";
             bool gameOn = true;
-
-
 
             //searches the maps in the directory
             string[] mapFiles = Directory.GetFiles(@".", "*.txt");
@@ -103,15 +100,14 @@ namespace ConsoleApp
             #endregion
 
             map.GlobalLoadAMapFromFile(map.MAPFILES[selectedMapNumber - 1], hunter, monster_S);
+
             DrawMap(map.mapArray, hunter, monster_S);
-
-            ShowGameInfo(hunter, map, selectedMapNumber, infoMessage);
-            checkMonsterAndHunter(monster_S, hunter);
-
             while (gameOn)
             {
+                ShowGameInfo(hunter, map, selectedMapNumber, infoMessage);
                 MoveMonster(canMoveMonster, monster_S, map, hunter);
                 MoveHunter(hunter, map, monster_S);
+                CheckPotion(hunter, map);
                 checkMonsterAndHunter(monster_S, hunter);
 
             }
@@ -175,12 +171,13 @@ namespace ConsoleApp
         //have to fix this
         static void ShowGameInfo(HUNTER hunter, MAP map, int selectedMap, string InfoMessage)
         {
-            Console.WriteLine($"Player: {hunter.NAME}         Map: {map.MAPFILES[selectedMap - 1]}  ");
-            Console.WriteLine($"HP: {hunter.CURRENTHP}        Level: {map.MAPFILES[selectedMap - 1].IndexOf(Convert.ToChar(selectedMap)) + 2}");
-            Console.WriteLine($"{hunter.HUNTERSCORE}          Infos: {InfoMessage}");//I have to finish implementing info message
 
-
-
+            Console.WriteLine($"Player: {hunter.NAME}");         
+            Console.WriteLine($"Map: {map.MAPFILES[selectedMap - 1]}");
+            Console.WriteLine($"HP: {hunter.CURRENTHP}");        
+            Console.WriteLine($"Level: {map.MAPFILES[selectedMap - 1].IndexOf(Convert.ToChar(selectedMap)) + 2}");
+            Console.WriteLine($"{hunter.HUNTERSCORE}");          
+            Console.WriteLine($"Infos: {InfoMessage}");//I have to finish implementing info message
 
         }
 
@@ -390,8 +387,41 @@ namespace ConsoleApp
         {
             if(map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX] == 'p')
             {
-                POTION potion = new POTION(hunter);
+                POTION potion = new POTION(hunter, map);
+
             }
+        }
+
+        static void CheckIfWeaponFound(HUNTER hunter, MAP map)
+        {
+            if (map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX] == 'w')
+            {
+                hunter.hasPickaxe = false;
+                hunter.hasShield = false;
+                SWORD sword = new SWORD();
+                hunter.hasSword = true;
+
+            }
+
+            if (map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX] == 'h')
+            {
+                hunter.hasSword = false;
+                hunter.hasPickaxe = false;
+                SHIELD shield = new SHIELD();
+                hunter.hasShield = true;
+
+            }
+
+            if (map.mapArray[hunter.POSINSCREENY][hunter.POSINSCREENX] == 'x')
+            {
+                hunter.hasSword = false;
+                hunter.hasShield = false;
+                PICKAXE pickaxe = new PICKAXE();
+                hunter.hasPickaxe = true;
+
+            }
+
+
         }
 
         //finish monster movement
@@ -420,7 +450,7 @@ namespace ConsoleApp
                             //draw player at new position
                             Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write('M');
+                            Console.Write('H');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartHunterSleepThread(hunter);
                         }
@@ -441,7 +471,7 @@ namespace ConsoleApp
                             //draw player at new position
                             Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write('M');
+                            Console.Write('H');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartHunterSleepThread(hunter);
                         }
@@ -462,7 +492,7 @@ namespace ConsoleApp
                             //draw player at new position
                             Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write('M');
+                            Console.Write('H');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartHunterSleepThread(hunter);
                         }
@@ -483,7 +513,7 @@ namespace ConsoleApp
                             //draw player at new position
                             Console.SetCursorPosition(hunter.POSINSCREENX, hunter.POSINSCREENY);
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write('M');
+                            Console.Write('H');
                             Console.ForegroundColor = ConsoleColor.Gray;
                             StartHunterSleepThread(hunter);
                         }
