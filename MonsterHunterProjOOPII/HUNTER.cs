@@ -162,6 +162,9 @@ namespace MonsterHunterProjOOPII
             this.HUNTERSCORE = 0;
             this.NAME = "";
             this.state = NormalState.getInstance();
+            this.hasPickaxe = false;
+            this.hasShield = false;
+            this.hasSword = false;
         }
 
     }

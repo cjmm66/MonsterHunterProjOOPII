@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace MonsterHunterProjOOPII
 {
@@ -12,6 +13,11 @@ namespace MonsterHunterProjOOPII
         //const
         const int MIN_NUM_DIRECTION = 1;
         const int MAX_NUM_DIRECTION = 6;//one more because of the .Next() max value handlement
+
+        //variable for form
+        public int pixelsToMove = 50;
+
+        //public PictureBox PictureBox;//didnt make sense, I was using the assembly reference
 
         public Direction monsterDirection;
 
@@ -76,15 +82,7 @@ namespace MonsterHunterProjOOPII
             }
         }
 
-        //public override void ResetValues()
-        //{
-        //    this.POSINSCREENX = 0;
-        //    this.POSINSCREENY = 0;
-        //    this.CURRENTHP = this.maxHp;
-        //    this.STRENGHT = this.normalMonsterArmor;
-        //    this.STRENGHT = this.normalMonsterStrenght;
-
-        //}
+       
 
     }
 }

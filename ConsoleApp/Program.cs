@@ -150,6 +150,7 @@ namespace ConsoleApp
             }
             Console.WriteLine("Thankk you for playing!");
             Console.ReadLine();
+            
 
         }
 
